@@ -1,30 +1,26 @@
-// const express = require("express");
-// const app = express();
-
-// app.set("view engine", "html");
-// app.engine("html", require("ejs").renderFile);
-// const books = require("./routes/books");
-
-// app.use("/", books);
-
-// app.listen(3000, () => {
-//   console.log("server running on port 3000");
-// });
-
+const controller = require("./controllers/BooksController");
 const express = require("express");
 const app = express();
 
-// Set up EJS as the view engine
-app.set("view engine", "ejs"); // Change "html" to "ejs"
-app.set("views", __dirname + "/views"); // Set the views directory
+app.set("view engine", "html");
+app.engine("html", require("ejs").renderFile);
+const books = require("./routes/books");
 
-// Import the books router
-const booksRouter = require("./routes/books");
+app.use("/", books);
 
-// Use the books router for requests starting with /books
-app.use("/books", booksRouter);
-
-// Start the server
 app.listen(3000, () => {
-  console.log("Server running on port 3000");
+  console.log("server running on port 3000");
+});
+
+// API endpoint to get book by ID
+app.get("/api/books/:id", (req, res) => {
+  const data = readData();
+  const id = parseInt(req.params.id, 10);
+  const book = data.books.find((book) => book.id === id);
+
+  if (!book) {
+    return res.status(404).json({ error: "Book not found" });
+  }
+
+  res.json(book);
 });

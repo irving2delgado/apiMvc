@@ -8,6 +8,8 @@ const controller = require("../controllers/BooksController");
 router.get("/bookList", controller.getBookList);
 router.get("/path", controller.getPath);
 router.get("/:id", controller.getBookById);
+router.get("/books/:id", controller.getBookById);  // New route
+
 
 
 module.exports = router;

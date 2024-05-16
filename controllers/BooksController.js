@@ -10,19 +10,7 @@ const readData = () => {
   }
 };
 
-// Define a new endpoint to display information about a specific book
-const getBookById = (req, res) => {
-  const id = req.params.id; // Extract the id parameter from the request
-  const data = readData();
-  const book = data.books.find(book => book.id === parseInt(id)); // Find the book with the specified id
-  if (!book) {
-    return res.status(404).send("Book not found");
-  }
-  res.render(path.join(__dirname, "../views/book.html"), { book });
-};
-
 module.exports = {
-  getBookById,
   getPath: (req, res) => {
     res.send(path.join(__dirname, "../views"));
   },
@@ -32,5 +20,17 @@ module.exports = {
       name: { ...data },
     });
   },
-};
+  getBookById: (req, res) => {
+    const data = readData();
+    const id = parseInt(req.params.id, 10);
+    const book = data.books.find((book) => book.id === id);
 
+    if (!book) {
+      return res.status(404).send('Book not found');
+    }
+
+    res.render(__dirname + "/../views/book.html", {
+      book,
+    });
+  }
+};
